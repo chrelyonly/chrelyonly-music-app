@@ -38,11 +38,15 @@
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "minSdkVersion" : 22,
+                "targetSdkVersion" : 30
             },
             /* ios打包配置 */
             "ios" : {
-                "dSYMs" : false
+                "dSYMs" : false,
+                "idfa" : true,
+                "UIBackgroundModes" : "audio"
             },
             /* SDK配置 */
             "sdkConfigs" : {}
@@ -70,5 +74,7 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "3"
+    "vueVersion" : "3",
+    "fallbackLocale" : "zh-Hans",
+    "locale" : "zh-Hans"
 }
