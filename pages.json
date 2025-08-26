@@ -18,8 +18,61 @@
 			{
 				"navigationBarTitleText" : ""
 			}
+		},
+		{
+			"path" : "pages/profile/profile",
+			"style" : 
+			{
+				"navigationBarTitleText" : "个人中心"
+			}
+		},
+		{
+			"path" : "pages/profile/profileEdit",
+			"style" : 
+			{
+				"navigationBarTitleText" : "信息修改"
+			}
+		},
+		{
+			"path" : "pages/login/login",
+			"style" : 
+			{
+				"navigationBarTitleText" : "登录"
+			}
+		},
+		{
+			"path" : "pages/register/register",
+			"style" : 
+			{
+				"navigationBarTitleText" : "注册\r
+		\t\t"
+			}
+		},
+		{
+			"path" : "pages/forgot/forgot",
+			"style" : 
+			{
+				"navigationBarTitleText" : "忘记密码\r
+		\t\t"
+			}
 		}
 	],
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#3cc51f",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页"
+			}, {
+				"pagePath": "pages/profile/profile",
+				"text": "个人中心"
+			}
+		]
+	},
+
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
