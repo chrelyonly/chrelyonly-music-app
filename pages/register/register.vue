@@ -3,7 +3,7 @@
     <!-- 顶部 Logo -->
     <view class="logo-section">
       <image class="logo" src="https://q1.qlogo.cn/g?b=qq&nk=123456&s=640" mode="aspectFill"></image>
-      <text class="app-name">音乐小程序</text>
+      <text class="app-name">音乐</text>
     </view>
 
     <!-- 注册表单 -->
@@ -40,6 +40,23 @@
         />
       </view>
 
+      <!-- 验证码输入框 + 图片 -->
+      <view class="form-item">
+        <uni-icons type="eye" size="26" color="#ff758c" class="icon"></uni-icons>
+        <input 
+          class="input" 
+          v-model="form.captcha" 
+          placeholder="请输入验证码" 
+          maxlength="6"
+        />
+        <image 
+          :src="captchaInfo.image" 
+          class="captcha-img" 
+          mode="aspectFill" 
+          @click="getCode"
+        ></image>
+      </view>
+
       <button class="register-btn" @click="register">注册</button>
     </view>
 
@@ -52,15 +69,24 @@
 
 <script setup>
 import { ref } from "vue"
+import { onLoad } from '@dcloudio/uni-app'
 
 const form = ref({
   username: '',
   password: '',
-  confirm: ''
+  confirm: '',
+  captcha: '' // 新增验证码输入
 })
 
+// 验证码信息
+const captchaInfo = ref({
+  key: "",
+  image: "",
+})
+
+// 注册逻辑
 const register = () => {
-  if (!form.value.username || !form.value.password || !form.value.confirm) {
+  if (!form.value.username || !form.value.password || !form.value.confirm || !form.value.captcha) {
     uni.showToast({ title: '请填写完整信息', icon: 'none' })
     return
   }
@@ -68,12 +94,49 @@ const register = () => {
     uni.showToast({ title: '两次密码不一致', icon: 'none' })
     return
   }
-  uni.showToast({ title: '注册成功', icon: 'success' })
-  uni.navigateBack()
+
+  // 请求后端注册接口
+  let params = {
+    username: form.value.username,
+    password: form.value.password,
+  }
+  let headers = {
+	  "Captcha-Key": captchaInfo.value.key,
+	  "Captcha-Code": form.value.captcha,
+  }
+
+ uni.showLoading({
+ 	mask: true
+ })
+  $https("/music-app/login/register","post",params,2,headers).then(res=>{
+    if(res.data.code === 200){
+      uni.showToast({ title: '注册成功', icon: 'success' })
+      uni.reLaunch({
+      	url: "/pages/login/login"
+      })
+    }else{
+      uni.showToast({ title: res.data.msg || '注册失败', icon: 'none' })
+      getCode() // 刷新验证码
+    }
+  }).finally(()=>{
+	  uni.hideLoading()
+  })
 }
 
 const goLogin = () => {
   uni.navigateBack()
+}
+
+onLoad(()=>{
+  // 获取验证码
+  getCode()
+})
+
+const getCode = ()=> {
+  $https("/music-app/login/getCode","get",{},1,{}).then(res => {
+    captchaInfo.value.image = res.data.data.image
+    captchaInfo.value.key = res.data.data.key
+  })
 }
 </script>
 
@@ -126,6 +189,12 @@ const goLogin = () => {
   border: none;
   font-size: 28rpx;
   height: 60rpx;
+}
+.captcha-img {
+  width: 160rpx;
+  height: 60rpx;
+  margin-left: 20rpx;
+  border-radius: 8rpx;
 }
 .register-btn {
   width: 100%;

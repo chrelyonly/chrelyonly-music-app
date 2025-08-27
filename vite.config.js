@@ -21,7 +21,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api/': {
-        target: "https://nginx-3.frp.chrelyonly.cn/api",
+        target: "http://127.0.0.1:8078",
         ws: true,
         // 是否跨域
         changeOrigin: true,

@@ -20,6 +20,10 @@
 	} from '@dcloudio/uni-app'
 	const searchText = ref("")
 	const musicData = ref([])
+	const pages = ref({
+		current: 1,
+		size: 10
+	})
 
 
 	onLoad((option) => {
@@ -30,10 +34,12 @@
 	// 加载数据
 	const init = ()=>{
 		let params = {
-			musicName: searchText.value
+			keywords: searchText.value,
+			current: pages.value.current,
+			size: pages.value.size,
 		}
-		$https("/music-api/musicKgList","get",params,1,{}).then( res=> {
-			musicData.value = res.data.data.data
+		$https("/music-app/song/searchMusic","get",params,1,{}).then( res=> {
+			musicData.value = res.data.data.records
 		})
 	}
 	// 前往音乐播放

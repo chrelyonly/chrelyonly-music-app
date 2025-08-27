@@ -3,7 +3,7 @@
     <!-- 顶部 Logo -->
     <view class="logo-section">
       <image class="logo" src="https://q1.qlogo.cn/g?b=qq&nk=123456&s=640" mode="aspectFill"></image>
-      <text class="app-name">音乐小程序</text>
+      <text class="app-name">音乐</text>
     </view>
 
     <!-- 登录表单 -->
@@ -28,7 +28,22 @@
           maxlength="20"
         />
       </view>
-
+      <!-- 验证码输入框 + 图片 -->
+      <view class="form-item">
+        <uni-icons type="eye" size="26" color="#ff758c" class="icon"></uni-icons>
+        <input 
+          class="input" 
+          v-model="form.captcha" 
+          placeholder="请输入验证码" 
+          maxlength="6"
+        />
+        <image 
+          :src="captchaInfo.image" 
+          class="captcha-img" 
+          mode="aspectFill" 
+          @click="getCode"
+        ></image>
+      </view>
       <button class="login-btn" @click="login">登录</button>
     </view>
 
@@ -41,12 +56,19 @@
 
 <script setup>
 import { ref } from "vue"
+import { onLoad } from '@dcloudio/uni-app'
 
 const form = ref({
   username: '',
-  password: ''
+  password: '',
+  captcha: '' // 新增验证码输入
 })
 
+// 验证码信息
+const captchaInfo = ref({
+  key: "",
+  image: "",
+})
 // 登录逻辑
 const login = () => {
   if (!form.value.username || !form.value.password) {
@@ -60,6 +82,19 @@ const login = () => {
 // 跳转注册页
 const goRegister = () => {
   uni.navigateTo({ url: '/pages/register/register' })
+}
+
+
+onLoad(()=>{
+  // 获取验证码
+  getCode()
+})
+
+const getCode = ()=> {
+  $https("/music-app/login/getCode","get",{},1,{}).then(res => {
+    captchaInfo.value.image = res.data.data.image
+    captchaInfo.value.key = res.data.data.key
+  })
 }
 </script>
 
@@ -135,5 +170,11 @@ const goRegister = () => {
 .footer text {
   color: #fff;
   font-size: 26rpx;
+}
+.captcha-img {
+  width: 160rpx;
+  height: 60rpx;
+  margin-left: 20rpx;
+  border-radius: 8rpx;
 }
 </style>
