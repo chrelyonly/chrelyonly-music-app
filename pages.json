@@ -53,6 +53,13 @@
 			{
 				"navigationBarTitleText" : "忘记密码"
 			}
+		},
+		{
+			"path" : "pages/musicFind/musicFind",
+			"style" : 
+			{
+				"navigationBarTitleText" : "音乐收录"
+			}
 		}
 	],
 	"tabBar": {
