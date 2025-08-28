@@ -1,7 +1,7 @@
 {
-    "name" : "chrelyonly-music-app",
+    "name" : "雪飘人间",
     "appid" : "__UNI__90B8962",
-    "description" : "爆炸",
+    "description" : "内部人员专用",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -11,7 +11,7 @@
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
         "splashscreen" : {
-            "alwaysShowBeforeRender" : true,
+            "alwaysShowBeforeRender" : false,
             "waiting" : true,
             "autoclose" : true,
             "delay" : 0
@@ -37,10 +37,17 @@
                 "UIBackgroundModes" : "audio"
             },
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {},
+            "splashscreen" : {
+                "androidStyle" : "default",
+                "android" : {
+                    "hdpi" : "static/start/480762.png",
+                    "xhdpi" : "static/start/7201242.png",
+                    "xxhdpi" : "static/start/10801882.png"
+                }
+            }
         },
-        "nvueLaunchMode" : "",
-        "renderer" : "native"
+        "nvueLaunchMode" : ""
     },
     /* 快应用特有相关 */
     "quickapp" : {},
