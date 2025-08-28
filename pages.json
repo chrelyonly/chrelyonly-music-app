@@ -3,62 +3,71 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "uni-app",
+				"navigationStyle": "custom",
 			}
 		},
 		{
 			"path": "pages/searchResult/searchResult",
 			"style": {
-				"navigationBarTitleText": "列表"
+				"navigationBarTitleText": "列表",
+				"navigationStyle": "custom",
 			}
 		},
 		{
 			"path" : "pages/musicPlay/musicPlay",
 			"style" : 
 			{
-				"navigationBarTitleText" : ""
+				"navigationBarTitleText" : "音乐播放",
+				"navigationStyle": "custom",
 			}
 		},
 		{
 			"path" : "pages/profile/profile",
 			"style" : 
 			{
-				"navigationBarTitleText" : "个人中心"
+				"navigationBarTitleText" : "个人中心",
+				"navigationStyle": "custom",
 			}
 		},
 		{
 			"path" : "pages/profile/profileEdit",
 			"style" : 
 			{
-				"navigationBarTitleText" : "信息修改"
+				"navigationBarTitleText" : "信息修改",
+				"navigationStyle": "custom",
 			}
 		},
 		{
 			"path" : "pages/login/login",
 			"style" : 
 			{
-				"navigationBarTitleText" : "登录"
+				"navigationBarTitleText" : "登录",
+				"navigationStyle": "custom",
 			}
 		},
 		{
 			"path" : "pages/register/register",
 			"style" : 
 			{
-				"navigationBarTitleText" : "注册"
+				"navigationBarTitleText" : "注册",
+				"navigationStyle": "custom",
 			}
 		},
 		{
 			"path" : "pages/forgot/forgot",
 			"style" : 
 			{
-				"navigationBarTitleText" : "忘记密码"
+				"navigationBarTitleText" : "忘记密码",
+				"navigationStyle": "custom",
 			}
 		},
 		{
 			"path" : "pages/musicFind/musicFind",
 			"style" : 
 			{
-				"navigationBarTitleText" : "音乐收录"
+				"navigationBarTitleText" : "音乐收录",
+				"navigationStyle": "custom",
 			}
 		}
 	],
@@ -70,15 +79,20 @@
 		"list": [
 			{
 				"pagePath": "pages/index/index",
+				"selectedIconPath": "/static/tabel-bar/index-select.png",
+				"iconPath": "/static/tabel-bar/index.png",
 				"text": "首页"
 			}, {
 				"pagePath": "pages/profile/profile",
+				"selectedIconPath": "/static/tabel-bar/profile-select.png",
+				"iconPath": "/static/tabel-bar/profile.png",
 				"text": "个人中心"
 			}
 		]
 	},
 
-	"globalStyle": {
+	"globalStyle": {,
+		"navigationStyle": "custom",
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
