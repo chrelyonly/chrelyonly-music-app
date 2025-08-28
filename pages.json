@@ -4,14 +4,14 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "uni-app",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom"
 			}
 		},
 		{
 			"path": "pages/searchResult/searchResult",
 			"style": {
 				"navigationBarTitleText": "列表",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -19,7 +19,7 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "音乐播放",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -27,7 +27,7 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "个人中心",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -35,7 +35,7 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "信息修改",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -43,7 +43,7 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "登录",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -51,7 +51,7 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "注册",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -59,7 +59,7 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "忘记密码",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -67,7 +67,7 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "音乐收录",
-				"navigationStyle": "custom",
+				"navigationStyle": "custom"
 			}
 		}
 	],
@@ -91,7 +91,7 @@
 		]
 	},
 
-	"globalStyle": {,
+	"globalStyle": {
 		"navigationStyle": "custom",
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
