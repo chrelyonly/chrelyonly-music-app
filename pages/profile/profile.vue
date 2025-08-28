@@ -5,9 +5,9 @@
       <uni-icons type="settings" size="26" color="#fff" class="settings" @click="goProfileEdit"></uni-icons>
       <uni-icons size="20" color="#fff" class="login" @click="goLoginEdit">登录</uni-icons>
       <view class="user-info">
-        <image class="avatar" :src="user.avatar" mode="aspectFill"></image>
-        <text class="nickname">{{ user.nickname }}</text>
-        <text class="signature">{{ user.signature }}</text>
+        <image class="avatar" :src="userInfo.avatar" mode="aspectFill"></image>
+        <text class="nickname">{{ userInfo.title }}</text>
+        <text class="signature">{{ userInfo.sign }}</text>
       </view>
     </view>
 
@@ -42,6 +42,8 @@
 
 <script setup>
 import { ref } from "vue"
+import { onLoad,onShow } from '@dcloudio/uni-app'
+import { setStore } from '@/util/store.js'
 
 const user = ref({
   avatar: "https://q1.qlogo.cn/g?b=qq&nk=123456&s=640",
@@ -84,6 +86,29 @@ const goLoginEdit = ()=>{
 		fail: () => {},
 		complete: () => {}
 	});
+}
+//监听页面切换变化
+onShow(()=>{
+	loadUserInfo()
+})
+
+const init = ()=>{
+	
+}
+
+const userInfo = ref({})
+// 获取用户信息
+const loadUserInfo = () => {
+	let params = {
+		
+	}
+	$https("/music-app/user/getProfile","get",params,1,{}).then( res=> {
+		userInfo.value = res.data.data
+		setStore({
+			name: "userInfo",
+			content: res.data.data
+		})
+	})
 }
 </script>
 

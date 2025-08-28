@@ -1,5 +1,6 @@
 // 引入加密包
 import {requestSign,responseSign} from "@/util/myCryptoFunc"
+import { getStore } from '@/util/store.js'
 //服务器项目地址  ！！！！！ 请填写 服务器后台接口地址(推荐使用反向代理进行配置)   api反向代理的地址   部署换成服务器
 // 服务器器域名 ,本地测试用,部署就留空
 // #ifdef APP
@@ -41,6 +42,15 @@ const https = (url,method, params,type,headers) => {
         } else if (type === 2) {
             headers["Content-Type"] = 'application/json'
         }
+		//固定塞入请求头acctoken,如果有的话
+		try {
+			let accToken = getStore({name: "accToken"})
+			if(accToken){
+				headers["Authorization"] = accToken
+			}
+		} catch (error) {
+			//TODO handle the exception
+		}
         // ******************************************************************加解密处理开始,对请求数据进行加签防止篡改 ,对data(?传参) data(body请求体) 进行加签
         // headers = requestSign(params, headers,url);
         // ******************************************************************加解密处理结束
