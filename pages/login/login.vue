@@ -2,7 +2,7 @@
   <view class="login-container">
     <!-- 顶部 Logo -->
     <view class="logo-section">
-      <image class="logo" src="https://q1.qlogo.cn/g?b=qq&nk=123456&s=640" mode="aspectFill"></image>
+      <image class="logo" src="@/static/login/logo.png" mode="aspectFill"></image>
       <text class="app-name">音乐</text>
     </view>
 
@@ -19,7 +19,7 @@
       </view>
 
       <view class="form-item">
-        <uni-icons type="unlock" size="26" color="#ff758c" class="icon"></uni-icons>
+        <uni-icons type="eye" size="26" color="#ff758c" class="icon"></uni-icons>
         <input 
           class="input" 
           v-model="form.password" 
@@ -30,7 +30,7 @@
       </view>
       <!-- 验证码输入框 + 图片 -->
       <view class="form-item">
-        <uni-icons type="eye" size="26" color="#ff758c" class="icon"></uni-icons>
+        <uni-icons type="info" size="26" color="#ff758c" class="icon"></uni-icons>
         <input 
           class="input" 
           v-model="form.captcha" 
@@ -57,6 +57,7 @@
 <script setup>
 import { ref } from "vue"
 import { onLoad } from '@dcloudio/uni-app'
+import { setStore } from '@/util/store.js'
 
 const form = ref({
   username: '',
@@ -71,12 +72,48 @@ const captchaInfo = ref({
 })
 // 登录逻辑
 const login = () => {
-  if (!form.value.username || !form.value.password) {
+  if (!form.value.username || !form.value.password || !form.value.captcha) {
     uni.showToast({ title: '请填写完整信息', icon: 'none' })
     return
   }
-  uni.showToast({ title: '登录成功', icon: 'success' })
-  // 这里可调用后端登录 API
+// 请求后端注册接口
+  let params = {
+    username: form.value.username,
+    password: form.value.password,
+  }
+  let headers = {
+	  "Captcha-Key": captchaInfo.value.key,
+	  "Captcha-Code": form.value.captcha,
+  }
+
+ uni.showLoading({
+ 	mask: true
+ })
+  $https("/music-app/login/login","post",params,2,headers).then(res=>{
+      uni.showToast({ title: '登录成功', icon: 'success' })
+	  
+	  setStore({
+	  		  name: "tokenInfo",
+	  		  content: res.data.data
+	  })
+	  setStore({
+		  name: "accToken",
+		  content: res.data.data.accToken
+	  })
+	  setStore({
+		  name: "refreshToken",
+		  content: res.data.data.refreshToken
+	  })
+	  uni.reLaunch({
+	  	url: "/pages/profile/profile"
+	  })
+  }).catch((e)=>{
+	// uni.showToast({ title: '登录失败', icon: 'none' })
+	getCode() // 刷新验证码
+  })
+  .finally(()=>{
+	  uni.hideLoading()
+  })
 }
 
 // 跳转注册页
