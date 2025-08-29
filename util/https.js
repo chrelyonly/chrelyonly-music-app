@@ -4,7 +4,7 @@ import { getStore } from '@/util/store.js'
 //服务器项目地址  ！！！！！ 请填写 服务器后台接口地址(推荐使用反向代理进行配置)   api反向代理的地址   部署换成服务器
 // 服务器器域名 ,本地测试用,部署就留空
 // #ifdef APP
-const serviceName = 'https://nginx-3.frp.chrelyonly.cn/api';
+const serviceName = 'https://nginx-3.frp.chrelyonly.cn/music-app';
 // const serviceName = 'http://192.168.1.19:8078';
 // #endif
 // #ifdef H5
