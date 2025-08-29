@@ -5,12 +5,13 @@
       <view v-if="musicData.length > 0">
         <view v-for="(item,index) in musicData" :key="index" @click="goDetail(item)">
           <uni-list-item
-            :title="item.singerName"
+            :title="item.songName"
             :note="item.singerName"
             showArrow
             :thumb="item.image"
             thumb-size="lg"
             rightText=""
+            class="music-item"
           ></uni-list-item>
         </view>
       </view>
@@ -40,23 +41,24 @@ const pages = ref({
 })
 
 onLoad((option) => {
-  console.log(option.searchText);
   searchText.value = option.searchText
   init()
 })
+
 // 加载数据
-const init = ()=>{
+const init = () => {
   let params = {
     keywords: searchText.value,
     current: pages.value.current,
     size: pages.value.size,
   }
-  $https("/music-app/song/searchMusic","get",params,1,{}).then( res=> {
+  $https("/music-app/song/searchMusic","get",params,1,{}).then(res => {
     musicData.value = res.data.data.records || []
   })
 }
+
 // 前往音乐播放
-const goDetail = (item)=> {
+const goDetail = (item) => {
   uni.navigateTo({
     url: '/pages/musicPlay/musicPlay?url=' + item.musicUrl,
   });
@@ -71,6 +73,24 @@ const goSearchMore = () => {
 </script>
 
 <style scoped>
+/* 页面背景统一 */
+uni-section {
+  background: linear-gradient(135deg,#dfe9f3,#f8f9fa);
+  border-radius: 20rpx;
+  margin: 20rpx;
+  padding: 20rpx 0;
+  box-shadow: 0 6rpx 20rpx rgba(160, 174, 192, 0.15);
+}
+
+/* 列表项美化 */
+.music-item {
+  border-radius: 16rpx;
+  margin: 8rpx 16rpx;
+  background: #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+}
+
+/* 空状态 */
 .empty-box {
   display: flex;
   justify-content: center;
@@ -78,13 +98,16 @@ const goSearchMore = () => {
   padding: 60rpx 0;
 }
 .empty-text {
-  color: #999;
+  color: #718096;
   font-size: 28rpx;
 }
+
+/* 底部提示 */
 .footer-tip {
   margin: 40rpx 0;
   text-align: center;
-  color: #ff758c;
+  color: #718096;
   font-size: 28rpx;
+  cursor: pointer;
 }
 </style>

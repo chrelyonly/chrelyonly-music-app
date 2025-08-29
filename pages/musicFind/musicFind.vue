@@ -66,9 +66,12 @@ const platforms = [
 const currentTab = ref("kugou")
 const musicList = ref([])
 const showList = ref(true)
-const keywords = ref("勾指起誓") // 搜索关键字
+const keywords = ref("") // 搜索关键字
 
 const loadMusic = () => {
+	if(keywords){
+		return
+	}
   let params = {
     platformType: currentTab.value,
     keywords: keywords.value,
@@ -96,7 +99,6 @@ const switchTab = (platform) => {
   showList.value = false
   setTimeout(() => {
     currentTab.value = platform
-    // keywords.value = "" // 切换平台清空搜索
     loadMusic()
     showList.value = true
   }, 50)
@@ -114,14 +116,12 @@ const collectSong = (song) => {
     icon: "success"
   })
   let params = {
-	  "musicName": song.musicName || keywords.value,
-	  "platformType": currentTab.value,
-	  "musicUrl": song.musicUrl,
-	  "musicHash": "132456789",
+    "musicName": song.musicName || keywords.value,
+    "platformType": currentTab.value,
+    "musicUrl": song.musicUrl,
+    "musicHash": "132456789",
   }
-  $https("/music-app/collect/downloadCollect","post",params,2,{}).then( res=> {
-	  
-  })
+  $https("/music-app/collect/downloadCollect","post",params,2,{}).then( res=> {})
 }
 
 onLoad(() => {
@@ -131,7 +131,7 @@ onLoad(() => {
 
 <style scoped>
 .collect-container {
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  background: #f9f9f9;
   min-height: 100vh;
   padding: 30rpx;
 }
@@ -144,7 +144,7 @@ onLoad(() => {
   border-radius: 50rpx;
   margin-bottom: 30rpx;
   padding: 12rpx;
-  box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.12);
+  box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.08);
 }
 .tab-item {
   flex: 1;
@@ -157,9 +157,9 @@ onLoad(() => {
 }
 .tab-item.active {
   font-weight: bold;
-  background: linear-gradient(135deg, #ff7eb3, #ff4d6d);
-  color: #fff;
-  box-shadow: 0 4rpx 10rpx rgba(255,118,148,0.4);
+  background: #e0e7ff;
+  color: #4a4a4a;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.08);
 }
 
 /* 搜索框 */
@@ -170,7 +170,7 @@ onLoad(() => {
   background: #fff;
   border-radius: 40rpx;
   padding: 10rpx 20rpx;
-  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.1);
+  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.05);
 }
 .search-input {
   flex: 1;
@@ -179,8 +179,8 @@ onLoad(() => {
   padding: 10rpx;
 }
 .search-btn {
-  background: linear-gradient(135deg, #ff7eb3, #ff4d6d);
-  color: #fff;
+  background: #e0e7ff;
+  color: #4a4a4a;
   font-size: 26rpx;
   padding: 14rpx 28rpx;
   border-radius: 40rpx;
@@ -199,7 +199,7 @@ onLoad(() => {
   background: #fff;
   border-radius: 20rpx;
   padding: 20rpx;
-  box-shadow: 0 6rpx 16rpx rgba(255,118,148,0.2);
+  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.05);
   transition: transform 0.2s;
 }
 .song-card:active {
@@ -238,18 +238,12 @@ onLoad(() => {
   transition: transform 0.2s;
 }
 .play-btn {
-  background: linear-gradient(135deg, #ff7eb3, #ff4d6d);
-  color: #fff;
+  background: #e0e7ff;
+  color: #4a4a4a;
 }
 .play-btn:active, .collect-btn:active {
   transform: scale(0.9);
 }
-.collect-btn {
-  background: #fff;
-  color: #ff4d6d;
-  border: 2rpx solid #ff4d6d;
-}
-
 /* 空数据提示 */
 .empty-box {
   text-align: center;
@@ -258,5 +252,39 @@ onLoad(() => {
 .empty-text {
   font-size: 28rpx;
   color: #999;
+}
+
+
+/* 按钮统一样式 */
+button {
+  border: none;
+  border-radius: 40rpx;
+  padding: 14rpx 28rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  transition: all 0.2s;
+  box-shadow: 0 6rpx 18rpx rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+
+/* 主按钮（注册、保存、播放） */
+.save-btn,
+.play-btn,
+.search-btn {
+  background: linear-gradient(135deg, #d9e4ff, #aabfff);
+  color: #333;
+}
+
+/* 次按钮（收录、收藏等） */
+.collect-btn {
+  background: #fff;
+  color: #4a4a4a;
+  border: 2rpx solid #ccc;
+}
+
+/* 按下效果 */
+button:active {
+  transform: scale(0.96);
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.06);
 }
 </style>

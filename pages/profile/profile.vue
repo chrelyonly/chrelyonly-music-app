@@ -11,32 +11,6 @@
       </view>
     </view>
 
-    <!-- 功能入口宫格 -->
-    <view class="feature-grid" @click="defaultFunc">
-      <view class="feature-item" v-for="item in features" :key="item.text">
-        <view class="feature-icon" :style="{ background: item.bg }">
-          <uni-icons :type="item.icon" size="22" color="#fff"></uni-icons>
-        </view>
-        <text class="feature-text">{{ item.text }}</text>
-      </view>
-    </view>
-
-    <!-- 我的歌单 -->
-    <view class="playlist-section" @click="defaultFunc">
-      <view class="section-header">
-        <text class="section-title">🎶 我的歌单</text>
-        <uni-icons type="arrow-right" size="20" color="#fff"></uni-icons>
-      </view>
-      <view class="playlist-list">
-        <view class="playlist-card" v-for="(item,index) in playlists" :key="index">
-          <image class="playlist-cover" :src="item.cover" mode="aspectFill"></image>
-          <view class="playlist-info">
-            <text class="playlist-name">{{ item.name }}</text>
-            <text class="playlist-count">{{ item.count }} 首</text>
-          </view>
-        </view>
-      </view>
-    </view>
   </scroll-view>
 </template>
 
@@ -45,23 +19,6 @@ import { ref } from "vue";
 import { onShow } from '@dcloudio/uni-app';
 import { setStore } from "@/util/store.js";
 
-const features = ref([
-  { text: "收藏", icon: "star", bg: "linear-gradient(135deg,#ff9a9e,#fad0c4)" },
-  { text: "关注", icon: "personadd", bg: "linear-gradient(135deg,#a18cd1,#fbc2eb)" },
-  { text: "粉丝", icon: "person", bg: "linear-gradient(135deg,#84fab0,#8fd3f4)" },
-  { text: "历史", icon: "time", bg: "linear-gradient(135deg,#fccb90,#d57eeb)" },
-  { text: "下载", icon: "download", bg: "linear-gradient(135deg,#fda085,#f6d365)" },
-  { text: "本地", icon: "folder", bg: "linear-gradient(135deg,#43e97b,#38f9d7)" },
-  { text: "排行榜", icon: "trophy", bg: "linear-gradient(135deg,#30cfd0,#330867)" },
-  { text: "电台", icon: "mic", bg: "linear-gradient(135deg,#667eea,#764ba2)" }
-]);
-
-const playlists = ref([
-  { name: "我喜欢的音乐", count: 20, cover: "https://y.gtimg.cn/music/photo_new/T002R300x300M000002J5mij1Z3m9h.jpg" },
-  { name: "安静学习", count: 15, cover: "https://y.gtimg.cn/music/photo_new/T002R300x300M000004V7z9J0XwJ2T.jpg" },
-  { name: "跑步必备", count: 30, cover: "https://y.gtimg.cn/music/photo_new/T002R300x300M000003DFRzY2ZnT8r.jpg" },
-  { name: "深夜放松", count: 12, cover: "https://y.gtimg.cn/music/photo_new/T002R300x300M000000hn4Ki0P8R9x.jpg" }
-]);
 
 const userInfo = ref({}); // 你的原本请求逻辑会填充这个
 
@@ -100,8 +57,6 @@ const loadUserInfo = () => {
 <style scoped>
 .profile-container {
   background: linear-gradient(135deg, 
-    #fdfbfb, 
-    #ebedee, 
     #dbe6f6, 
     #cfd9df, 
     #e0c3fc, 
@@ -109,7 +64,9 @@ const loadUserInfo = () => {
   );
   background-size: 200% 200%;
   animation: gradientAnimation 18s ease infinite;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 40rpx 20rpx;
+  box-sizing: border-box;
 }
 
 @keyframes gradientAnimation {
@@ -119,22 +76,25 @@ const loadUserInfo = () => {
 }
 
 .header-bg {
-  background: transparent;
+  background: linear-gradient(160deg, rgba(0,0,0,0.3), rgba(0,0,0,0));
+  border-radius: 30rpx;
+  padding: 60rpx 30rpx 40rpx;
+  position: relative;
+  margin-bottom: 40rpx;
+  box-shadow: 0 6rpx 20rpx rgba(0,0,0,0.1);
 }
-
-
-
-
 
 .settings {
   position: absolute;
-  right: 20rpx;
-  top: 20rpx;
+  right: 30rpx;
+  top: 30rpx;
 }
 .login {
   position: absolute;
-  right: 80rpx;
-  top: 20rpx;
+  right: 100rpx;
+  top: 34rpx;
+  font-size: 26rpx;
+  font-weight: 500;
 }
 .user-info {
   display: flex;
@@ -142,50 +102,61 @@ const loadUserInfo = () => {
   align-items: center;
 }
 .avatar {
-  width: 160rpx;
-  height: 160rpx;
+  width: 180rpx;
+  height: 180rpx;
   border-radius: 50%;
-  border: 4rpx solid rgba(255,255,255,0.5);
+  border: 6rpx solid rgba(255,255,255,0.8);
   margin-bottom: 20rpx;
+  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.15);
 }
 .nickname {
-  font-size: 36rpx;
+  font-size: 38rpx;
   font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2rpx 6rpx rgba(0,0,0,0.3);
 }
 .signature {
   font-size: 26rpx;
-  margin-top: 6rpx;
+  margin-top: 8rpx;
+  color: #f2f2f2;
 }
 
 /* 功能入口宫格 */
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(4,1fr);
-  margin: 20rpx 0;
-  gap: 20rpx;
+  gap: 30rpx 20rpx;
+  margin: 40rpx 0;
 }
 .feature-item {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20rpx 0;
 }
 .feature-icon {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 20rpx;
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 24rpx;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 12rpx;
-  background: rgba(255,255,255,0.2); /* 半透明图标底色 */
+  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  box-shadow: 0 6rpx 12rpx rgba(0,0,0,0.1);
 }
 .feature-text {
   font-size: 24rpx;
+  color: #333;
 }
 
 /* 歌单列表 */
 .playlist-section {
-  margin-top: 30rpx;
+  margin-top: 20rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(0,0,0,0.05);
 }
 .section-header {
   display: flex;
@@ -194,8 +165,9 @@ const loadUserInfo = () => {
   margin-bottom: 20rpx;
 }
 .section-title {
-  font-size: 30rpx;
+  font-size: 32rpx;
   font-weight: bold;
+  color: #222;
 }
 .playlist-list {
   display: flex;
@@ -205,12 +177,17 @@ const loadUserInfo = () => {
 .playlist-card {
   display: flex;
   align-items: center;
+  background: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.04);
 }
 .playlist-cover {
   width: 140rpx;
   height: 140rpx;
   border-radius: 16rpx;
   margin-right: 20rpx;
+  object-fit: cover;
 }
 .playlist-info {
   display: flex;
@@ -219,8 +196,11 @@ const loadUserInfo = () => {
 .playlist-name {
   font-size: 28rpx;
   font-weight: 600;
+  color: #333;
 }
 .playlist-count {
   font-size: 24rpx;
+  margin-top: 6rpx;
+  color: #888;
 }
 </style>

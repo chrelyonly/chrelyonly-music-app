@@ -2,7 +2,7 @@
   <view class="register-container">
     <!-- 顶部 Logo -->
     <view class="logo-section">
-      <image class="logo" src="https://q1.qlogo.cn/g?b=qq&nk=123456&s=640" mode="aspectFill"></image>
+      <image class="logo" src="@/static/login/logo.png" mode="aspectFill"></image>
       <text class="app-name">音乐</text>
     </view>
 
@@ -142,75 +142,143 @@ const getCode = ()=> {
 
 <style scoped>
 .register-container {
-  background: linear-gradient(135deg,#ff758c,#ff7eb3);
+  background: linear-gradient(135deg,#dfe9f3,#f8f9fa); /* 柔和灰白渐变 */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 160rpx;
+  position: relative;
+  overflow: hidden;
 }
+
+/* 背景柔光点缀 */
+.register-container::before,
+.register-container::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(160rpx);
+  opacity: 0.25;
+}
+.register-container::before {
+  width: 480rpx;
+  height: 480rpx;
+  background: rgba(160, 174, 192, 0.25); /* 灰紫 */
+  top: -160rpx;
+  left: -100rpx;
+}
+.register-container::after {
+  width: 420rpx;
+  height: 420rpx;
+  background: rgba(226, 232, 240, 0.25); /* 浅灰蓝 */
+  bottom: -120rpx;
+  right: -100rpx;
+}
+
+/* Logo */
 .logo-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 80rpx;
+  z-index: 1;
 }
 .logo {
   width: 140rpx;
   height: 140rpx;
   border-radius: 50%;
-  border: 4rpx solid #fff;
+  border: 6rpx solid rgba(255, 255, 255, 0.85);
   margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.15);
 }
 .app-name {
-  font-size: 36rpx;
-  color: #fff;
-  font-weight: bold;
+  font-size: 38rpx;
+  color: #4a5568; /* 深灰蓝文字 */
+  font-weight: 600;
+  letter-spacing: 3rpx;
 }
+
+/* 表单容器 */
 .form-section {
   width: 80%;
   background: #fff;
-  border-radius: 30rpx;
-  padding: 40rpx 30rpx;
-  box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.12);
+  border-radius: 28rpx;
+  padding: 40rpx 36rpx;
+  box-shadow: 0 10rpx 24rpx rgba(0, 0, 0, 0.08);
+  z-index: 1;
 }
+
+/* 输入框 */
 .form-item {
   display: flex;
   align-items: center;
-  border-bottom: 2rpx solid #eee;
-  margin-bottom: 40rpx;
-  padding-bottom: 10rpx;
+  background: #f7fafc;
+  border-radius: 40rpx;
+  padding: 20rpx 26rpx;
+  margin-bottom: 36rpx;
+  transition: all 0.3s;
+}
+.form-item:focus-within {
+  background: #fff;
+  box-shadow: 0 0 0 3rpx rgba(160, 174, 192, 0.3); /* 灰紫边框 */
 }
 .icon {
   margin-right: 20rpx;
+  color: #718096; /* 柔和灰蓝 */
 }
 .input {
   flex: 1;
   border: none;
   font-size: 28rpx;
   height: 60rpx;
+  background: transparent;
 }
+
+/* 验证码 */
 .captcha-img {
   width: 160rpx;
   height: 60rpx;
   margin-left: 20rpx;
-  border-radius: 8rpx;
+  border-radius: 10rpx;
+  border: 1rpx solid #e2e8f0;
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.06);
+  transition: all 0.2s;
 }
+.captcha-img:active {
+  transform: scale(0.96);
+  opacity: 0.8;
+}
+
+/* 注册按钮 */
 .register-btn {
   width: 100%;
   height: 80rpx;
-  background: linear-gradient(135deg,#ff758c,#ff7eb3);
+  background: linear-gradient(135deg,#a0aec0,#cbd5e0); /* 柔和灰蓝渐变 */
   border-radius: 40rpx;
   color: #fff;
   font-size: 30rpx;
-  font-weight: bold;
-  box-shadow: 0 6rpx 18rpx rgba(255,118,148,0.4);
+  font-weight: 600;
+  box-shadow: 0 6rpx 16rpx rgba(160, 174, 192, 0.3);
+  transition: all 0.25s;
 }
+.register-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 4rpx 12rpx rgba(160, 174, 192, 0.25);
+}
+
+/* 底部 */
 .footer {
-  margin-top: 40rpx;
+  margin-top: 50rpx;
+  text-align: center;
+  z-index: 1;
 }
 .footer text {
-  color: #fff;
-  font-size: 26rpx;
+  color: #4a5568;
+  font-size: 28rpx;
 }
+.footer text:active {
+  opacity: 0.7;
+}
+
 </style>

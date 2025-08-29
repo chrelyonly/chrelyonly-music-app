@@ -158,104 +158,137 @@
 
 <style scoped>
 	.edit-container {
-		background: #f9f9f9;
-		min-height: 100vh;
-		padding: 40rpx 30rpx;
+	  background: linear-gradient(135deg,#dfe9f3,#f8f9fa); /* 柔和灰白背景 */
+	  min-height: 100vh;
+	  padding: 40rpx 30rpx;
+	  position: relative;
+	  overflow: hidden;
 	}
-
-	/* 头像部分 */
+	
+	/* 背景点缀柔光 */
+	.edit-container::before,
+	.edit-container::after {
+	  content: "";
+	  position: absolute;
+	  border-radius: 50%;
+	  filter: blur(160rpx);
+	  opacity: 0.25;
+	}
+	.edit-container::before {
+	  width: 460rpx;
+	  height: 460rpx;
+	  background: rgba(160, 174, 192, 0.25); /* 灰紫 */
+	  top: -160rpx;
+	  left: -100rpx;
+	}
+	.edit-container::after {
+	  width: 420rpx;
+	  height: 420rpx;
+	  background: rgba(226, 232, 240, 0.25); /* 浅灰蓝 */
+	  bottom: -120rpx;
+	  right: -100rpx;
+	}
+	
+	/* 头像 */
 	.avatar-section {
-		display: flex;
-		justify-content: center;
-		margin-bottom: 50rpx;
+	  display: flex;
+	  justify-content: center;
+	  margin-bottom: 50rpx;
+	  z-index: 1;
 	}
-
 	.avatar-box {
-		position: relative;
-		width: 180rpx;
-		height: 180rpx;
-		border-radius: 50%;
-		overflow: hidden;
-		box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.15);
+	  position: relative;
+	  width: 180rpx;
+	  height: 180rpx;
+	  border-radius: 50%;
+	  overflow: hidden;
+	  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
 	}
-
 	.avatar {
-		width: 100%;
-		height: 100%;
+	  width: 100%;
+	  height: 100%;
 	}
-
 	.avatar-mask {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		background: rgba(0, 0, 0, 0.4);
-		text-align: center;
-		font-size: 24rpx;
-		color: #fff;
-		padding: 8rpx 0;
+	  position: absolute;
+	  bottom: 0;
+	  width: 100%;
+	  background: rgba(74, 85, 104, 0.6); /* 深灰蓝半透明 */
+	  text-align: center;
+	  font-size: 24rpx;
+	  color: #fff;
+	  padding: 8rpx 0;
 	}
-
-	/* 表单部分 */
+	
+	/* 表单 */
 	.form-section {
-		background: #fff;
-		border-radius: 20rpx;
-		padding: 20rpx;
-		box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+	  background: #fff;
+	  border-radius: 20rpx;
+	  padding: 28rpx;
+	  box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.05);
+	  z-index: 1;
 	}
-
 	.form-item {
-		margin-bottom: 30rpx;
+	  margin-bottom: 32rpx;
 	}
-
 	.label {
-		font-size: 28rpx;
-		color: #333;
-		font-weight: 500;
-		margin-bottom: 10rpx;
-		display: block;
+	  font-size: 28rpx;
+	  color: #4a5568; /* 深灰蓝 */
+	  font-weight: 500;
+	  margin-bottom: 12rpx;
+	  display: block;
 	}
-
 	.input {
-		border: none;
-		border-bottom: 2rpx solid #eee;
-		font-size: 28rpx;
-		padding: 12rpx 0;
-		width: 100%;
+	  border: none;
+	  border-bottom: 2rpx solid #e2e8f0;
+	  font-size: 28rpx;
+	  padding: 12rpx 0;
+	  width: 100%;
+	  transition: border 0.2s;
 	}
-
+	.input:focus {
+	  border-bottom: 2rpx solid #a0aec0; /* 灰紫 */
+	}
 	.textarea {
-		width: 100%;
-		min-height: 100rpx;
-		padding: 12rpx;
-		font-size: 26rpx;
-		background: #f8f8f8;
-		border-radius: 12rpx;
-		border: none;
+	  width: 100%;
+	  min-height: 120rpx;
+	  padding: 14rpx;
+	  font-size: 26rpx;
+	  background: #f7fafc;
+	  border-radius: 14rpx;
+	  border: 1rpx solid #e2e8f0;
 	}
-
+	
+	/* 性别单选 */
 	.radio-group {
-		display: flex;
-		gap: 40rpx;
-		margin-top: 10rpx;
+	  display: flex;
+	  gap: 40rpx;
+	  margin-top: 12rpx;
 	}
-
 	.radio-item {
-		font-size: 26rpx;
-		color: #444;
+	  font-size: 26rpx;
+	  color: #4a5568;
 	}
-
-	/* 按钮 */
+	
+	/* 保存按钮 */
 	.btn-box {
-		margin-top: 60rpx;
+	  margin-top: 70rpx;
+	  z-index: 1;
+	}
+	.save-btn {
+	  background: linear-gradient(135deg,#a0aec0,#cbd5e0); /* 灰蓝渐变 */
+	  border: none;
+	  border-radius: 40rpx;
+	  font-size: 30rpx;
+	  height: 90rpx;
+	  line-height: 90rpx;
+	  font-weight: 600;
+	  color: #fff;
+	  box-shadow: 0 6rpx 16rpx rgba(160, 174, 192, 0.3);
+	  transition: all 0.25s;
+	}
+	.save-btn:active {
+	  transform: scale(0.97);
+	  box-shadow: 0 4rpx 12rpx rgba(160, 174, 192, 0.25);
 	}
 
-	.save-btn {
-		background: linear-gradient(135deg, #ff758c, #ff7eb3);
-		border: none;
-		border-radius: 40rpx;
-		font-size: 30rpx;
-		height: 90rpx;
-		line-height: 90rpx;
-		box-shadow: 0 6rpx 20rpx rgba(255, 118, 148, 0.4);
-	}
 </style>
