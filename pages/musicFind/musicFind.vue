@@ -69,7 +69,7 @@ const showList = ref(true)
 const keywords = ref("") // 搜索关键字
 
 const loadMusic = () => {
-	if(keywords){
+	if(!keywords.value){
 		return
 	}
   let params = {
@@ -106,7 +106,7 @@ const switchTab = (platform) => {
 
 const playSong = (song) => {
   uni.navigateTo({
-    url: `/pages/musicPlay/musicPlay?url=${song.url}`
+    url: `/pages/musicPlay/musicPlay?url=${song.musicUrl}`
   })
 }
 
