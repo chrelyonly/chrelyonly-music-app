@@ -1,38 +1,35 @@
 <template>
 	<view class="player">
 		<!-- 背景模糊封面 -->
-		<image class="bg" :src="musicInfo.coverUrl" mode="aspectFill"></image>
+		<image class="bg" :src="musicInfo.image" mode="aspectFill"></image>
 		<view class="mask"></view>
 
 		<!-- 歌名 -->
 		<text class="title">{{ musicInfo.name }}</text>
 
-		<!-- 歌曲 / 歌词 -->
-		<transition name="tab-fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-			<view v-if="tabIndex===0" class="disc">
-				<image class="cover" :class="{ rotate: isPlaying }" :src="musicInfo.coverUrl"></image>
-			</view>
-		</transition>
-		
-		<transition name="tab-fade" @before-enter="beforeEnter" @enter="enter" @leave="leave">
-			<scroll-view
-				v-show="tabIndex===1"
-				scroll-y
-				class="lyric-box"
-				:scroll-into-view="currentLyricId"
-				scroll-with-animation
+		<!-- 唱片封面 -->
+		<view v-if="tabIndex===0" class="disc">
+			<image class="cover" :class="{ rotate: isPlaying }" :src="musicInfo.image"></image>
+		</view>
+
+		<!-- 歌词 -->
+		<scroll-view
+			v-else
+			scroll-y
+			class="lyric-box"
+			:scroll-into-view="currentLyricId"
+			scroll-with-animation
+		>
+			<view
+				v-for="(line,idx) in lyrics"
+				:key="idx"
+				:id="'lyric-'+idx"
+				class="lyric-line"
+				:class="{active: idx===currentLyricIndex}"
 			>
-				<view
-					v-for="(line,idx) in nameLyric"
-					:key="idx"
-					:id="'lyric-'+idx"
-					class="lyric-line"
-					:class="{active: idx===currentLyricIndex}"
-				>
-					{{ line.text }}
-				</view>
-			</scroll-view>
-		</transition>
+				{{ line.text }}
+			</view>
+		</scroll-view>
 
 		<!-- tab 歌曲 / 歌词 -->
 		<view class="tab">
@@ -59,14 +56,17 @@
 	</view>
 </template>
 
-
 <script setup>
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-// 音乐信息
-const musicInfo = ref({})
-// 歌词
-const nameLyric = ref([]);
+
+const musicInfo = ref({
+	image:"http://imge.kugou.com/stdmusic/{size}/20240428/20240428110653306668.jpg",
+	url:"http://fs.youthandroid2.kugou.com/202508251541/1e385dfe9c48ca054d249bbf278fa73e/v3/1f62c7d9b83059cc879da895e0ad64cf/yp/full/ap3116_us0_mi336d5ebc5436534e61d16e63ddfca327_pi411_mx0_qu128_ct510100_s1826936956.mp3",
+	name:"海阔天空",
+	// 示例 LRC 地址，可以换成真实接口返回的歌词文件
+	lrc:"https://cdn.jsdelivr.net/gh/azhaohui/netease-lrc/BEYOND-海阔天空.lrc"
+})
 
 const isPlaying = ref(false)
 let audioCtx = null
@@ -74,62 +74,19 @@ const currentTime = ref(0)
 const duration = ref(0)
 const progress = ref(0)
 const tabIndex = ref(0)
+
 const currentTimeStr = computed(()=>formatTime(currentTime.value))
 const durationStr = computed(()=>formatTime(duration.value))
 
+// 歌词数据
+const lyrics = ref([])
 const currentLyricIndex = ref(0)
 const currentLyricId = computed(()=>`lyric-${currentLyricIndex.value}`)
 
 onLoad((option)=>{
-	if(option.hash){
-		loadMusicInfo(option.hash);
-		loadMusicPlay(option.hash);
-	}else{
-		uni.redirectTo({
-			url: "/pages/searchResult/searchResult"
-		})
-	}
-})
-
-//加载信息
-const loadMusicInfo = (hash)=>{
-	let params = {
-		hash: hash
-	}
-	$https("/music-app/song/musicRadio","get",params,1,{}).then( res=> {
-		musicInfo.value = res.data.data
-		if (musicInfo.value.nameLyric) {
-		      const parsed = parseLrc(musicInfo.value.nameLyric)
-		      nameLyric.value = parsed
-		}
-	})
-}
-
-// LRC 解析
-const parseLrc = (lrcText)=>{
-  const lines = lrcText.split("\n")
-  let result = []
-  const timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/ // 匹配 [mm:ss.xx] 或 [mm:ss.xxx]
-  lines.forEach(line=>{
-    const match = line.match(timeReg)
-    if(match){
-      let min = parseInt(match[1])
-      let sec = parseInt(match[2])
-      let ms = match[3] ? parseInt(match[3]) : 0
-      if(match[3].length===2) ms = ms*10
-      let time = min*60 + sec + ms/1000
-      let text = line.replace(timeReg,"").trim()
-      if(text) result.push({time,text})
-    }
-  })
-  return result.sort((a,b)=>a.time-b.time)
-}
-
-// 加载音乐流
-const loadMusicPlay = (hash)=>{
-	
+	musicInfo.value.url = option.url
 	audioCtx = uni.createInnerAudioContext()
-	audioCtx.src = "/api/music-app/song/musicPlay?hash=" + hash
+	audioCtx.src = musicInfo.value.url
 	audioCtx.onTimeUpdate(()=>{
 		currentTime.value = audioCtx.currentTime
 		duration.value = audioCtx.duration
@@ -139,7 +96,11 @@ const loadMusicPlay = (hash)=>{
 	audioCtx.onEnded(()=>{
 		isPlaying.value = false
 	})
-}
+
+	// 加载歌词
+	loadLyric()
+})
+
 const togglePlay = ()=>{
 	if(!audioCtx) return
 	if(isPlaying.value){
@@ -159,20 +120,42 @@ const onSeek = (e)=>{
 
 // 歌词高亮
 const updateLyric = (time)=>{
-	// for(let i=0;i<nameLyric.value.length;i++){
-	// 	if(time >= nameLyric.value[i].time){
-	// 		currentLyricIndex.value = i
-	// 	}
-	// }
-	// 
-	  for(let i=nameLyric.value.length-1;i>=0;i--){
-	    if(time >= nameLyric.value[i].time){
-	      currentLyricIndex.value = i
-	      break
-	    }
-	  }
+	for(let i=0;i<lyrics.value.length;i++){
+		if(time >= lyrics.value[i].time){
+			currentLyricIndex.value = i
+		}
+	}
 }
 
+// 加载并解析 LRC
+const loadLyric = ()=>{
+	uni.request({
+		url: musicInfo.value.lrc,
+		success:res=>{
+			lyrics.value = parseLrc(res.data)
+		}
+	})
+}
+
+// LRC 解析
+const parseLrc = (lrcText)=>{
+	const lines = lrcText.split("\n")
+	let result = []
+	const timeReg = /\[(\d{2}):(\d{2})(?:\.(\d{2,3}))?\]/
+	lines.forEach(line=>{
+		const match = line.match(timeReg)
+		if(match){
+			let min = parseInt(match[1])
+			let sec = parseInt(match[2])
+			let ms = match[3] ? parseInt(match[3]) : 0
+			if(match[3] && match[3].length===2){ ms = ms*10 } // 2位转毫秒
+			let time = min*60 + sec + ms/1000
+			let text = line.replace(timeReg,"").trim()
+			if(text) result.push({time,text})
+		}
+	})
+	return result.sort((a,b)=>a.time-b.time)
+}
 
 const formatTime = (sec)=>{
 	if(!sec) return "00:00"
@@ -183,13 +166,6 @@ const formatTime = (sec)=>{
 </script>
 
 <style scoped>
-.tab-fade-enter-active, .tab-fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-.tab-fade-enter, .tab-fade-leave-to /* .tab-fade-leave-active in <2.1.8 */ {
-  opacity: 0;
-}
-
 .player {
 	position: relative;
 	width: 100%;
@@ -229,14 +205,15 @@ const formatTime = (sec)=>{
 
 .disc {
 	margin: 60rpx 0;
-	height: 100%;
+	width: 400rpx;
+	height: 400rpx;
 	border-radius: 50%;
+	border: 8rpx solid rgba(255,255,255,0.3);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 .cover {
-	border: 8rpx solid rgba(255,255,255,0.3);
 	width: 320rpx;
 	height: 320rpx;
 	border-radius: 50%;
@@ -265,10 +242,10 @@ const formatTime = (sec)=>{
 }
 
 .lyric-box {
-  flex: 1;
-  width: 100%;
-  text-align: center;
-  overflow-y: scroll;
+	flex: 1;
+	width: 100%;
+	margin-top: 40rpx;
+	text-align: center;
 }
 .lyric-line {
 	font-size: 28rpx;
@@ -279,7 +256,6 @@ const formatTime = (sec)=>{
 	color: #fff;
 	font-size: 34rpx;
 	font-weight: bold;
-
 }
 
 .progress {
@@ -298,7 +274,7 @@ const formatTime = (sec)=>{
 }
 
 .controls {
-	margin-bottom: 120rpx;
+	margin-top: 20rpx;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;

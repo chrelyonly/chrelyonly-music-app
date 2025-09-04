@@ -23,6 +23,14 @@
 			}
 		},
 		{
+			"path" : "pages/musicPlay/fundMusicPlay",
+			"style" : 
+			{
+				"navigationBarTitleText" : "音乐试听",
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path" : "pages/profile/profile",
 			"style" : 
 			{

@@ -59,8 +59,8 @@ import { onLoad } from '@dcloudio/uni-app'
 
 const platforms = [
   { label: "酷狗", value: "kugou" },
-  { label: "QQ", value: "qq" },
-  { label: "网易云", value: "netease" }
+  // { label: "QQ", value: "qq" },
+  // { label: "网易云", value: "netease" }
 ]
 
 const currentTab = ref("kugou")
@@ -106,7 +106,7 @@ const switchTab = (platform) => {
 
 const playSong = (song) => {
   uni.navigateTo({
-    url: `/pages/musicPlay/musicPlay?url=${song.musicUrl}`
+    url: `/pages/musicPlay/fundMusicPlay?url=${song.musicUrl}`
   })
 }
 
@@ -116,10 +116,13 @@ const collectSong = (song) => {
     icon: "success"
   })
   let params = {
-    "musicName": song.musicName || keywords.value,
+    "musicName": song.musicName,
+    "image": song.image,
+    "singerName": song.singerName,
+    "songLyric": song.songLyric,
     "platformType": currentTab.value,
     "musicUrl": song.musicUrl,
-    "musicHash": "132456789",
+    "musicHash": song.musicHash,
   }
   $https("/music-app/collect/downloadCollect","post",params,2,{}).then( res=> {})
 }

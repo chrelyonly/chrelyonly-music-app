@@ -5,10 +5,10 @@
       <view v-if="musicData.length > 0">
         <view v-for="(item,index) in musicData" :key="index" @click="goDetail(item)">
           <uni-list-item
-            :title="item.songName"
-            :note="item.singerName"
+            :title="item.name"
+            :note="item.artist"
             showArrow
-            :thumb="item.image"
+            :thumb="item.coverUrl"
             thumb-size="lg"
             rightText=""
             class="music-item"
@@ -60,7 +60,7 @@ const init = () => {
 // 前往音乐播放
 const goDetail = (item) => {
   uni.navigateTo({
-    url: '/pages/musicPlay/musicPlay?url=' + item.musicUrl,
+    url: '/pages/musicPlay/musicPlay?hash=' + item.hash,
   });
 }
 
