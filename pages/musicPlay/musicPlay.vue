@@ -9,14 +9,11 @@
 		<text class="title">{{ musicInfo.name }}</text>
 
 		<!-- 歌曲封面 / 歌词切换区域 -->
-		<!-- <transition name="tab-fade"> -->
 			<!-- 歌曲封面显示 -->
 			<view v-if="tabIndex===0" class="disc">
 				<image class="cover" :class="{ rotate: isPlaying }" :src="musicInfo.coverUrl"></image>
 			</view>
-		<!-- </transition> -->
 		
-		<!-- <transition name="tab-fade"> -->
 			<!-- 歌词显示 -->
 			<scroll-view
 				v-if="tabIndex===1"
@@ -35,7 +32,6 @@
 					{{ line.text }}
 				</view>
 			</scroll-view>
-		<!-- </transition> -->
 
 		<!-- tab 切换按钮 -->
 		<view class="tab">
