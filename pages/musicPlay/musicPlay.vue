@@ -9,17 +9,17 @@
 		<text class="title">{{ musicInfo.name }}</text>
 
 		<!-- 歌曲封面 / 歌词切换区域 -->
-		<transition name="tab-fade">
+		<!-- <transition name="tab-fade"> -->
 			<!-- 歌曲封面显示 -->
 			<view v-if="tabIndex===0" class="disc">
 				<image class="cover" :class="{ rotate: isPlaying }" :src="musicInfo.coverUrl"></image>
 			</view>
-		</transition>
+		<!-- </transition> -->
 		
-		<transition name="tab-fade">
+		<!-- <transition name="tab-fade"> -->
 			<!-- 歌词显示 -->
 			<scroll-view
-				v-show="tabIndex===1"
+				v-if="tabIndex===1"
 				scroll-y
 				class="lyric-box"
 				:scroll-into-view="currentLyricId"
@@ -35,7 +35,7 @@
 					{{ line.text }}
 				</view>
 			</scroll-view>
-		</transition>
+		<!-- </transition> -->
 
 		<!-- tab 切换按钮 -->
 		<view class="tab">
@@ -148,7 +148,7 @@ const parseLrc = (lrcText)=>{
 // 加载音乐播放
 const loadMusicPlay = (hash)=>{
 	audioCtx = uni.createInnerAudioContext()
-	audioCtx.src = "/api/music-app/song/musicPlay?hash=" + hash
+	audioCtx.src = $serviceName + "/music-app/song/musicPlay?hash=" + hash
 
 	// 时间更新事件
 	audioCtx.onTimeUpdate(()=>{
